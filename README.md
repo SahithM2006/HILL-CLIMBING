@@ -37,7 +37,57 @@ Feedback is provided in terms of heuristic function
 <p> Evaluate the fitness function or Heuristic Function</p>
 <h3>Step-4:</h3>
 <p> Lopp Step -2 and Step-3  until we achieve the score to be Zero to achieve Global Minima.</p>
+<h2>Program</h2>
 
+```
+import random
+import string
+
+def generate_random_solution(answer):
+  l = len(answer)
+  return [random.choice(string.printable) for _ in range(l)]
+
+def evaluate(solution, answer):
+  target = list(answer)
+  diff = 0
+  for i in range(len(target)):
+      s = solution[i]
+      t = target[i]
+      # calculate ASCII difference
+      diff += abs(ord(s) - ord(t))
+  return diff
+
+def mutate_solution(solution):
+  ind = random.randint(0, len(solution)-1)
+  solution[ind] = random.choice(string.printable)
+  return solution
+
+def SimpleHillClimbing():
+  answer = "Artificial Intelligence"
+  best = generate_random_solution(answer)
+  best_score = evaluate(best, answer)
+  iteration = 0
+  max_iterations = 100000   # safety stop
+
+  while True:
+      iteration += 1
+      print("Score:", best_score, " Solution:", "".join(best))
+      if best_score == 0:
+          print("Perfect match found!")
+          break
+      new_solution = mutate_solution(list(best))
+      score = evaluate(new_solution, answer)
+      if score < best_score:
+          best = new_solution
+          best_score = score
+      if iteration >= max_iterations:
+          print("Stopped after", max_iterations, "iterations")
+          break
+
+SimpleHillClimbing()
+
+
+```
 <hr>
 <h2>Sample Input and Output</h2>
 <h2>Sample String:</h2> Artificial Intelligence
@@ -59,3 +109,7 @@ Score: 1  Solution :  Artificial Intelligencf<br>
 Score: 1  Solution :  Artificial Intelligencf<br>
 Score: 1  Solution :  Artificial Intelligencf<br>
 Score: 0  Solution :  Artificial Intelligence<br>
+<img width="716" height="411" alt="image" src="https://github.com/user-attachments/assets/56aba0a2-d3f1-4a7d-8665-8e8e2493c6ad" />
+<img width="749" height="403" alt="image" src="https://github.com/user-attachments/assets/66e26ad3-dccb-4d3c-b66a-aa5dbe02ca34" />
+<h2>Result</h2>
+The Simple Hill Climbing algorithm incrementally improves a randomly generated solution by applying small mutations and selecting only those changes that reduce the cost function, eventually converging to the optimal solution.
